@@ -1,32 +1,24 @@
 import pandas as pd
-from datetime import datetime, timedelta
-import random
+from datetime import datetime
 
-ips = ["192.168.1.10", "192.168.1.11", "192.168.1.12"]
-base_time = datetime(2025, 5, 20, 10, 0, 0)
+# Örnek log verileri (etiketli)
+logs = [
+    {"ip": "192.168.1.10", "status_code": 401, "timestamp": "2025-05-15 10:01:03", "label": 1},
+    {"ip": "192.168.1.10", "status_code": 401, "timestamp": "2025-05-15 10:03:00", "label": 1},
+    {"ip": "192.168.1.10", "status_code": 401, "timestamp": "2025-05-15 10:04:00", "label": 1},
+    {"ip": "192.168.1.10", "status_code": 200, "timestamp": "2025-05-15 10:05:00", "label": 0},
+    {"ip": "192.168.1.11", "status_code": 401, "timestamp": "2025-05-15 10:02:00", "label": 0},
+    {"ip": "192.168.1.11", "status_code": 401, "timestamp": "2025-05-15 10:04:00", "label": 0},
+    {"ip": "192.168.1.11", "status_code": 401, "timestamp": "2025-05-15 10:06:00", "label": 1},
+    {"ip": "192.168.1.12", "status_code": 200, "timestamp": "2025-05-15 10:07:00", "label": 0},
+    {"ip": "192.168.1.12", "status_code": 401, "timestamp": "2025-05-15 10:09:00", "label": 0},
+]
 
-logs = []
-
-# Brute force yapan IP (saldırı örneği)
-for i in range(5):
-    logs.append({
-        "ip": "192.168.1.10",
-        "timestamp": base_time + timedelta(minutes=i),
-        "path": "/login",
-        "status_code": 401,
-        "label": 1
-    })
-
-# Normal kullanıcı trafiği
-for i in range(15):
-    logs.append({
-        "ip": random.choice(ips),
-        "timestamp": base_time + timedelta(minutes=i+10),
-        "path": "/login",
-        "status_code": random.choice([200, 401]),
-        "label": 0
-    })
-
+# DataFrame'e çevir
 df = pd.DataFrame(logs)
 df["timestamp"] = pd.to_datetime(df["timestamp"])
-print(df.head())
+
+# CSV olarak kaydet
+df.to_csv("data/generated_logs.csv", index=False)
+
+print("✅ Etiketli log verisi başarıyla oluşturuldu: data/generated_logs.csv")
