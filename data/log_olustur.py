@@ -31,3 +31,7 @@ with open("data/ornek2.log", "w") as f:
         f.write(satir + "\n")
 
 print("✅ ornek2.log başarıyla oluşturuldu.")
+
+
+
+# .
